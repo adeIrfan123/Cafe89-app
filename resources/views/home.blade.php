@@ -8,7 +8,7 @@
                 <div class="slide snap-start flex-shrink-0 w-full h-full relative">
                     <!-- Banner Image -->
                     <img src="{{ Storage::url($banner->image) }}" alt="{{ $banner->title }}"
-                        class="w-full h-full object-cover rounded-2xl">
+                        class="w-full h-[600px] lg:h-[900px] object-cover rounded-2xl">
 
                     <!-- Overlay Content -->
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
@@ -22,25 +22,28 @@
         </div>
 
         <!-- Navigation Arrows -->
-        <button id="prev"
-            class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-        </button>
-        <button id="next"
-            class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </button>
+        <div class="hidden lg:block">
+            <button id="prev"
+                class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <button id="next"
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
 
         <!-- Pagination Dots -->
-        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+        <div class=" absolute bottom-0 lg:bottom-10 left-1/2 transform -translate-x-1/2 flex gap-2">
             @foreach ($banners as $index => $banner)
-                <span class="w-3 h-3 rounded-full bg-white/60 hover:bg-white transition-all cursor-pointer"></span>
+                <span
+                    class="pagination-dots w-3 h-3 rounded-full bg-white/60 hover:bg-white transition-all cursor-pointer"></span>
             @endforeach
         </div>
     </div>

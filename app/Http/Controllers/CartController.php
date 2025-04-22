@@ -9,12 +9,12 @@ class CartController extends Controller
 {
     public function index()
     {
-        // session()->forget('cart');
+
         $cart = session()->get('cart', []);
-        // Hitung total harga
+
         $total = 0;
         foreach ($cart as $item) {
-            // Bersihkan format harga jika mengandung titik
+
             $price = str_replace('.', '', $item['price']);
             $total += (float)$price * $item['quantity'];
         }
@@ -23,10 +23,10 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $product = Product::findOrFail($request->product_id); // Ambil produk berdasarkan ID
+        $product = Product::findOrFail($request->product_id);
         $quantity = $request->input('quantity', 1);
 
-        // Pastikan produk memiliki ID yang valid
+
         if (!$product->id) {
             return redirect()->route('products')->with('error', 'Produk tidak ditemukan.');
         }
@@ -69,12 +69,10 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        // Cek apakah item dengan product_id ada di cart
         if (isset($cart[$id])) {
-            unset($cart[$id]);  // Hapus item
+            unset($cart[$id]);
         }
 
-        // Simpan kembali cart ke session
         session()->put('cart', $cart);
 
         return back()->with('success', 'Produk berhasil dihapus dari keranjang!');

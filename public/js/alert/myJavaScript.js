@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function() {
 const slider = document.querySelector('.slider');
 const slides = document.querySelectorAll('.slide');
-const dots = document.querySelectorAll('.absolute.bottom-4 span');
+const dots = document.querySelectorAll('.pagination-dots');
 const prevBtn = document.querySelector('#prev');
 const nextBtn = document.querySelector('#next');
 
@@ -127,7 +127,6 @@ if (nextIndex >= slides.length || nextIndex < 0) {
     });
     }
 
-    // Update active dot
     function updateDots() {
     dots.forEach((dot, index) => {
     dot.classList.toggle('bg-white', index === currentIndex);
@@ -135,18 +134,16 @@ if (nextIndex >= slides.length || nextIndex < 0) {
     });
     }
 
-    // Scroll to slide
     function goToSlide(index) {
     currentIndex = index;
     slider.scrollTo({
     left: slides[index].offsetLeft,
-    top: 0, // Pastikan tidak ada scroll vertikal
+    top: 0,
     behavior: 'smooth'
     });
     updateDots();
     }
 
-    // Event listeners
     dots.forEach((dot, index) => {
     dot.addEventListener('click', () => goToSlide(index));
     });
@@ -167,7 +164,6 @@ if (nextIndex >= slides.length || nextIndex < 0) {
 
 // #
 document.addEventListener('DOMContentLoaded', function() {
-    // Back to Top Button
     const backToTopButton = document.getElementById('back-to-top');
 
     window.addEventListener('scroll', function() {
@@ -187,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     });
 
-    // Highlight active category in navigation
     const categorySections = document.querySelectorAll('section[id^="kategori-"]');
     const categoryLinks = document.querySelectorAll('.category-nav-link');
 
@@ -214,7 +209,6 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('scroll', highlightActiveCategory);
         highlightActiveCategory(); // Run once on load
 
-        // Add to cart animation
         const addToCartForms = document.querySelectorAll('form[action="{{ route("cart.add") }}"]');
 
         addToCartForms.forEach(form => {
@@ -224,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const button = this.querySelector('button[type="submit"]');
         const originalText = button.innerHTML;
 
-        // Show loading state
         button.innerHTML = `
         <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -234,9 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         button.disabled = true;
 
-        // Simulate API call (replace with actual fetch)
         setTimeout(() => {
-        // Submit the form after animation
         this.submit();
         }, 1000);
         });

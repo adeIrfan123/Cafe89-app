@@ -38,6 +38,11 @@ class CategoryResource extends Resource
                 Forms\Components\FileUpload::make('image')
                     ->required()
                     ->columnSpanFull(),
+                Forms\Components\Textarea::make('description')
+                    ->label('Deskripsi Kategori')
+                    ->columnSpanFull()
+                    ->maxLength(500)
+                    ->helperText('Maksimal 500 karakter'),
             ]);
     }
 

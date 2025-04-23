@@ -2,14 +2,12 @@
 
 @section('content')
     <div class="mt-30 px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Hero Section -->
         <div class="text-center mb-16">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#b6895b] mb-6 animate-fadeIn">Our Menu</h1>
             <p class="text-lg text-gray-300 max-w-3xl mx-auto">Discover our exquisite selection of coffee and delicacies
                 crafted with passion</p>
         </div>
 
-        <!-- Category Navigation (Sticky) -->
         <div class="sticky top-31 bg-[#854836] z-10 mb-8 py-3 shadow-md lg:top-20 lg:py-3">
             <div class="flex overflow-x-auto space-x-6 px-4 hide-scrollbar">
                 @foreach ($categories as $category)
@@ -21,18 +19,18 @@
             </div>
         </div>
 
-        <!-- Menu Items -->
         <div class="max-w-7xl mx-auto ">
             @foreach ($categories as $category)
                 <section id="kategori-{{ $category->id }}" class="mb-20 scroll-mt-24">
-                    <h2 class="text-3xl font-bold text-[#b6895b] mb-8 pt-[70px] pb-2 border-b-2 border-[#b6895b]">
+                    <h2
+                        class="text-3xl font-bold text-[#b6895b] mb-8 pt-[97px] lg:pt-[70px] pb-2 border-b-2 border-[#b6895b]">
                         {{ $category->category }}
                     </h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 -mb-14">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         @foreach ($products->where('category_id', $category->id) as $product)
                             <div
-                                class="bg-[#1e1e1e] rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 h-full flex flex-col">
+                                class="product-card bg-[#1e1e1e] rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 h-full flex flex-col">
                                 <div class="relative overflow-hidden h-48">
                                     <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
                                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
@@ -78,7 +76,6 @@
             @endforeach
         </div>
 
-        <!-- Back to Top Button -->
         <button id="back-to-top"
             class="fixed bottom-8 right-8 bg-[#b6895b] text-white p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"

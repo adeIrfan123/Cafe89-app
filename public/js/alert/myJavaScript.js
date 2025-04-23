@@ -1,308 +1,267 @@
-// massage
-document.addEventListener('DOMContentLoaded', function () {
-const flash = document.getElementById('flash-message');
-if (flash) {
-setTimeout(() => {
-flash.style.transition = 'opacity 0.5s ease';
-flash.style.opacity = '0';
+document.addEventListener('DOMContentLoaded', function() {
+    const flashMessage = document.getElementById('flash-message');
 
-setTimeout(() => {
-flash.remove();
-}, 500);
-}, 3000);
-}
+    if (flashMessage) {
+        setTimeout(function() {
+            flashMessage.style.transition = 'opacity 0.5s ease';
+            flashMessage.style.opacity = '0';
+
+            setTimeout(function() {
+                flashMessage.remove();
+            }, 500);
+
+        }, 3000);
+    }
 });
 
-// humburger menu
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
     if (mobileMenuButton && mobileMenu) {
         let isMenuOpen = false;
+        const menuLinks = mobileMenu.querySelectorAll('a');
+        const animationDuration = 300;
 
-        mobileMenuButton.addEventListener('click', function (event) {
-            event.stopPropagation();
-
-            isMenuOpen = !isMenuOpen;
-
+        const toggleMobileMenu = () => {
             if (isMenuOpen) {
                 mobileMenu.classList.remove('invisible', 'opacity-0', 'scale-95');
                 mobileMenu.classList.add('opacity-100', 'scale-100');
-
-                // Ganti ikon menjadi "x"
-                mobileMenuButton.innerHTML = `<i id="hamburger-menu" data-feather="x" class="w-6 h-6"></i>`;
+                mobileMenuButton.innerHTML = `<i data-feather="x" class="w-6 h-6"></i>`;
             } else {
                 mobileMenu.classList.remove('opacity-100', 'scale-100');
                 mobileMenu.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => {
-                    mobileMenu.classList.add('invisible');
-                }, 300);
-
-                // Ganti ikon menjadi "menu"
-                mobileMenuButton.innerHTML = `<i id="hamburger-menu" data-feather="menu" class="w-6 h-6"></i>`;
+                setTimeout(() => mobileMenu.classList.add('invisible'), animationDuration);
+                mobileMenuButton.innerHTML = `<i data-feather="menu" class="w-6 h-6"></i>`;
             }
-
             feather.replace();
+        };
+
+        const closeMobileMenu = () => {
+            isMenuOpen = false;
+            mobileMenu.classList.remove('opacity-100', 'scale-100');
+            mobileMenu.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => mobileMenu.classList.add('invisible'), animationDuration);
+            mobileMenuButton.innerHTML = `<i data-feather="menu" class="w-6 h-6"></i>`;
+            feather.replace();
+        };
+
+        mobileMenuButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            isMenuOpen = !isMenuOpen;
+            toggleMobileMenu();
         });
 
-        // Klik di luar menu
-        document.addEventListener('click', function (event) {
-            if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
-                isMenuOpen = false;
-                mobileMenu.classList.remove('opacity-100', 'scale-100');
-                mobileMenu.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => {
-                    mobileMenu.classList.add('invisible');
-                }, 300);
-
-                mobileMenuButton.innerHTML = `<i id="hamburger-menu" data-feather="menu" class="w-6 h-6"></i>`;
-                feather.replace();
+        document.addEventListener('click', function(event) {
+            if (isMenuOpen &&
+                !mobileMenu.contains(event.target) &&
+                !mobileMenuButton.contains(event.target)) {
+                closeMobileMenu();
             }
         });
 
-        // Klik link menu = tutup menu
-        const menuLinks = mobileMenu.querySelectorAll('a');
         menuLinks.forEach(link => {
-            link.addEventListener('click', function () {
-                isMenuOpen = false;
-                mobileMenu.classList.remove('opacity-100', 'scale-100');
-                mobileMenu.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => {
-                    mobileMenu.classList.add('invisible');
-                }, 300);
-
-                mobileMenuButton.innerHTML = `<i id="hamburger-menu" data-feather="menu" class="w-6 h-6"></i>`;
-                feather.replace();
-            });
+            link.addEventListener('click', closeMobileMenu);
         });
     }
 });
 
 
-
-// auto slide
 document.addEventListener('DOMContentLoaded', function() {
-const slider = document.querySelector('.slider');
-const slides = document.querySelectorAll('.slide');
-const dots = document.querySelectorAll('.pagination-dots');
-const prevBtn = document.querySelector('#prev');
-const nextBtn = document.querySelector('#next');
+    const slider = document.querySelector('.slider');
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.pagination-dots');
+    const prevBtn = document.querySelector('#prev');
+    const nextBtn = document.querySelector('#next');
 
-let currentIndex = 0;
+    let currentIndex = 0;
+    const intervalTime = 5000;
+    let slideInterval;
+    let direction = 1;
 
-const intervalTime = 5000;
-let slideInterval;
-let direction = 1;
+    function nextSlide() {
+        const nextIndex = currentIndex + direction;
 
-function nextSlide() {
-const nextIndex = currentIndex + direction;
-
-if (nextIndex >= slides.length || nextIndex < 0) {
-    direction *=-1;
-    goToSlide(currentIndex + direction);
-    } else {
-    goToSlide(nextIndex);
+        if (nextIndex >= slides.length || nextIndex < 0) {
+            direction *= -1;
+            goToSlide(currentIndex + direction);
+        } else {
+            goToSlide(nextIndex);
+        }
     }
-    }
+
     function startAutoScroll() {
-    slideInterval=setInterval(nextSlide, intervalTime);
+        slideInterval = setInterval(nextSlide, intervalTime);
     }
+
     function stopAutoScroll() {
-    clearInterval(slideInterval);
+        clearInterval(slideInterval);
     }
-    if (slides.length> 1) {
-    startAutoScroll();
 
-    slider.addEventListener('mouseenter', stopAutoScroll);
+    if (slides.length > 1) {
+        startAutoScroll();
 
-    slider.addEventListener('mouseleave', startAutoScroll);
+        slider.addEventListener('mouseenter', stopAutoScroll);
+        slider.addEventListener('mouseleave', startAutoScroll);
 
-    document.addEventListener('visibilitychange', function() {
-    if (document.hidden) {
-    stopAutoScroll();
-    } else {
-    startAutoScroll();
-    }
-    });
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                stopAutoScroll();
+            } else {
+                startAutoScroll();
+            }
+        });
     }
 
     function updateDots() {
-    dots.forEach((dot, index) => {
-    dot.classList.toggle('bg-white', index === currentIndex);
-    dot.classList.toggle('bg-white/60', index !== currentIndex);
-    });
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('bg-white', index === currentIndex);
+            dot.classList.toggle('bg-white/60', index !== currentIndex);
+        });
     }
 
     function goToSlide(index) {
-    currentIndex = index;
-    slider.scrollTo({
-    left: slides[index].offsetLeft,
-    top: 0,
-    behavior: 'smooth'
-    });
-    updateDots();
+        currentIndex = index;
+        slider.scrollTo({
+            left: slides[index].offsetLeft,
+            top: 0,
+            behavior: 'smooth'
+        });
+        updateDots();
     }
 
     dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => goToSlide(index));
+        dot.addEventListener('click', () => goToSlide(index));
     });
 
     prevBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-    goToSlide(currentIndex);
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        goToSlide(currentIndex);
     });
 
     nextBtn.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % slides.length;
-    goToSlide(currentIndex);
+        currentIndex = (currentIndex + 1) % slides.length;
+        goToSlide(currentIndex);
     });
-    });
-
-// Memories
+});
 
 
-// #
 document.addEventListener('DOMContentLoaded', function() {
     const backToTopButton = document.getElementById('back-to-top');
 
-    window.addEventListener('scroll', function() {
-    if (window.pageYOffset > 300) {
-    backToTopButton.classList.remove('opacity-0', 'invisible');
-    backToTopButton.classList.add('opacity-100', 'visible');
-    } else {
-    backToTopButton.classList.remove('opacity-100', 'visible');
-    backToTopButton.classList.add('opacity-0', 'invisible');
-    }
-    });
+    if (backToTopButton) {
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
 
-    backToTopButton.addEventListener('click', function() {
-    window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-    });
-    });
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 
     const categorySections = document.querySelectorAll('section[id^="kategori-"]');
     const categoryLinks = document.querySelectorAll('.category-nav-link');
 
-    function highlightActiveCategory() {
-    let currentSection = '';
+    if (categorySections.length && categoryLinks.length) {
+        function highlightActiveCategory() {
+            let currentSection = '';
 
-    categorySections.forEach(section => {
-    const sectionTop = section.offsetTop;
-    const sectionHeight = section.clientHeight;
+            categorySections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
 
-    if (window.pageYOffset >= sectionTop - 150 && window.pageYOffset < sectionTop + sectionHeight - 150) {
-        currentSection=section.getAttribute('id');
-        }
-        });
+                if (window.pageYOffset >= sectionTop - 150 &&
+                    window.pageYOffset < sectionTop + sectionHeight - 150) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
 
-        categoryLinks.forEach(link=> {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${currentSection}`) {
-        link.classList.add('active');
-        }
-        });
+            categoryLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === `#${currentSection}`);
+            });
         }
 
         window.addEventListener('scroll', highlightActiveCategory);
-        highlightActiveCategory(); // Run once on load
-
-        const addToCartForms = document.querySelectorAll('form[action="{{ route("cart.add") }}"]');
-
-        addToCartForms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const button = this.querySelector('button[type="submit"]');
-        const originalText = button.innerHTML;
-
-        button.innerHTML = `
-        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        Adding...
-        `;
-        button.disabled = true;
-
-        setTimeout(() => {
-        this.submit();
-        }, 1000);
-        });
-        });
-        });
+        highlightActiveCategory();
+    }
+});
 
 
-// #
 document.addEventListener('DOMContentLoaded', function() {
-        // Quantity Selector
-        const quantityInput = document.getElementById('quantity');
-        const buyNowQuantity = document.getElementById('buy-now-quantity');
 
-        document.querySelector('.increment-qty').addEventListener('click', function() {
-        let value = parseInt(quantityInput.value);
-        const max = parseInt(quantityInput.max) || 20;
-        if (value < max) {
-            quantityInput.value=value + 1;
-            buyNowQuantity.value=quantityInput.value;
-            }
-            });
+    const quantityInput = document.getElementById('quantity');
+    const buyNowQuantity = document.getElementById('buy-now-quantity');
+    const incrementBtn = document.querySelector('.increment-qty');
+    const decrementBtn = document.querySelector('.decrement-qty');
+    const maxQuantity = parseInt(quantityInput.max) || 20;
 
-            document.querySelector('.decrement-qty').addEventListener('click', function() {
-            let value=parseInt(quantityInput.value);
-            if (value> 1) {
-            quantityInput.value = value - 1;
-            buyNowQuantity.value = quantityInput.value;
-            }
-            });
+    function updateQuantity(value) {
+        value = Math.max(1, Math.min(maxQuantity, value));
+        quantityInput.value = value;
+        buyNowQuantity.value = value;
+    }
 
-            quantityInput.addEventListener('change', function() {
-            let value = parseInt(this.value);
-            const max = parseInt(this.max) || 20;
-            if (isNaN(value) || value < 1) {
-                this.value=1;
-                } else if (value> max) {
-                this.value = max;
-                }
-                buyNowQuantity.value = this.value;
-                });
+    if (incrementBtn) {
+        incrementBtn.addEventListener('click', function() {
+            updateQuantity(parseInt(quantityInput.value) + 1);
+        });
+    }
 
-                // Image Zoom
-                const mainImage = document.getElementById('main-product-image');
-                if (mainImage) {
-                mainImage.addEventListener('click', function() {
-                this.classList.toggle('zoomed');
-                });
-                }
+    if (decrementBtn) {
+        decrementBtn.addEventListener('click', function() {
+            updateQuantity(parseInt(quantityInput.value) - 1);
+        });
+    }
 
-                // Add to Cart/Buy Now Button Loading States
-                const forms = document.querySelectorAll('form');
+    if (quantityInput) {
+        quantityInput.addEventListener('change', function() {
+            updateQuantity(parseInt(this.value));
+        });
+    }
 
-                forms.forEach(form => {
-                form.addEventListener('submit', function(e) {
-                const button = this.querySelector('button[type="submit"]');
-                const originalText = button.innerHTML;
+    const mainImage = document.getElementById('main-product-image');
+    if (mainImage) {
+        mainImage.addEventListener('click', function() {
+            this.classList.toggle('zoomed');
+            this.style.transform = this.classList.contains('zoomed') ? 'scale(1.5)' : 'scale(1)';
+            this.style.cursor = this.classList.contains('zoomed') ? 'zoom-out' : 'zoom-in';
+        });
+    }
 
-                // Show loading state
-                button.innerHTML = `
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    const forms = document.querySelectorAll('form');
+
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const button = this.querySelector('button[type="submit"]');
+            if (!button) return;
+
+            const originalText = button.innerHTML;
+            const originalDisabled = button.disabled;
+
+            button.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
                 Processing...
-                `;
-                button.disabled = true;
+            `;
+            button.disabled = true;
 
-                // Revert after 3 seconds if submission fails
-                setTimeout(() => {
+            setTimeout(() => {
                 if (!this.classList.contains('submitted')) {
-                button.innerHTML = originalText;
-                button.disabled = false;
+                    button.innerHTML = originalText;
+                    button.disabled = originalDisabled;
                 }
-                }, 3000);
-                });
-                });
-                });
-
+            }, 3000);
+        });
+    });
+});

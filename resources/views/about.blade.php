@@ -1,16 +1,13 @@
 @extends('layouts.main')
 
 @section('content')
-    <!-- Hero Section -->
     <div class="relative h-[60vh] flex items-center px-[4%] bg-amber-900 rounded-2xl overflow-hidden">
-        <!-- Background Image with Overlay -->
         <div class="absolute inset-0">
             <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1800&q=80"
                 alt="Coffee Shop" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-amber-900/60"></div>
         </div>
 
-        <!-- Hero Content -->
         <div class="relative z-10 text-center w-full text-white">
             <h1 class="text-4xl md:text-6xl font-bold mb-6">About Coffee<span class="text-amber-300">89</span></h1>
             <p class="text-xl md:text-2xl max-w-3xl mx-auto">Our journey from a small coffee stand to your favorite
@@ -18,11 +15,9 @@
         </div>
     </div>
 
-    <!-- Our Story Section -->
     <div class="w-full max-w-[1800px] bg-amber-200 mx-auto py-24 px-4 sm:px-8 rounded-2xl relative -top-10">
         <div class="container mx-auto">
             <div class="flex flex-col lg:flex-row gap-12 items-center">
-                <!-- Image -->
                 <div class="lg:w-1/2">
                     <div class="rounded-xl overflow-hidden shadow-2xl">
                         <img src="https://images.unsplash.com/photo-1463797221720-6b07e6426c24?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
@@ -30,7 +25,6 @@
                     </div>
                 </div>
 
-                <!-- Content -->
                 <div class="lg:w-1/2">
                     <h2 class="text-3xl md:text-4xl font-bold mb-6 text-amber-800">
                         Our <span class="text-amber-600">Story</span>
@@ -64,7 +58,6 @@
         </div>
     </div>
 
-    <!-- Our Values Section -->
     <div class="w-full bg-amber-900 py-24 text-white">
         <div class="container mx-auto px-4 sm:px-8">
             <div class="text-center mb-16">
@@ -73,7 +66,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Value 1 -->
                 <div class="bg-amber-800 p-8 rounded-xl text-center hover:bg-amber-700 transition-colors">
                     <div class="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
@@ -87,7 +79,6 @@
                         exacting standards.</p>
                 </div>
 
-                <!-- Value 2 -->
                 <div class="bg-amber-800 p-8 rounded-xl text-center hover:bg-amber-700 transition-colors">
                     <div class="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
@@ -101,7 +92,6 @@
                     </p>
                 </div>
 
-                <!-- Value 3 -->
                 <div class="bg-amber-800 p-8 rounded-xl text-center hover:bg-amber-700 transition-colors">
                     <div class="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
@@ -118,7 +108,6 @@
         </div>
     </div>
 
-    <!-- Team Section -->
     <div class="w-full max-w-[1800px] bg-amber-200 mx-auto py-24 px-4 sm:px-8 rounded-2xl">
         <div class="container mx-auto">
             <div class="text-center mb-16">
@@ -128,7 +117,6 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Team Member 1 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                     <div class="h-64 overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
@@ -142,7 +130,6 @@
                     </div>
                 </div>
 
-                <!-- Team Member 2 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                     <div class="h-64 overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
@@ -156,7 +143,6 @@
                     </div>
                 </div>
 
-                <!-- Team Member 3 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                     <div class="h-64 overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
@@ -169,7 +155,6 @@
                     </div>
                 </div>
 
-                <!-- Team Member 4 -->
                 <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                     <div class="h-64 overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
@@ -185,7 +170,6 @@
         </div>
     </div>
 
-    <!-- Visit Us CTA -->
     <div class="w-full bg-amber-900 py-20 text-white">
         <div class="container mx-auto px-4 sm:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">Come Visit Us</h2>

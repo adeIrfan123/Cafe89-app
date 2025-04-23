@@ -9,13 +9,10 @@
 
     @vite('resources/css/app.css')
 
-    {{-- style --}}
     <link rel="stylesheet" href="{{ asset('css/style/style.css') }}">
 
-    {{-- icons --}}
     <script src="https://unpkg.com/feather-icons"></script>
 
-    {{-- font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -28,7 +25,6 @@
         <div class="container mx-auto">
             <nav class="bg-[#b6895b] p-4 fixed top-0 left-0 right-0 z-50 shadow-lg">
                 <div class="flex items-center justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- Logo and Main Navigation -->
                     <div class="flex items-center space-x-8">
                         <a href="{{ route('home') }}"
                             class="flex items-center text-3xl font-bold text-white hover:text-amber-100 transition-colors duration-300">
@@ -56,9 +52,7 @@
                         </div>
                     </div>
 
-                    <!-- Search and Icons -->
                     <div class="flex items-center space-x-4">
-                        <!-- Search Bar -->
                         <div class="relative hidden md:block">
                             <input type="text" placeholder="Search..."
                                 class="bg-white/20 backdrop-blur-sm border border-amber-200/30 rounded-full py-1 px-4 pr-10 text-white placeholder-amber-100/70 focus:outline-none focus:ring-2 focus:ring-amber-200 focus:border-transparent transition-all duration-300 w-48 lg:w-64">
@@ -68,12 +62,10 @@
                             </button>
                         </div>
 
-                        <!-- Icons -->
                         <div class="flex items-center space-x-4">
                             <a href="{{ route('cart.index') }}"
                                 class="{{ request()->routeIs('cart.index') ? 'text-black font-semibold' : 'text-white hover:text-amber-100' }} relative p-2 transition-colors duration-300">
                                 <i data-feather="shopping-cart" class="w-6 h-6"></i>
-                                <!-- Cart Counter Badge -->
                                 <span
                                     class="absolute -top-1 -right-1 bg-[#854836] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                                     0
@@ -85,12 +77,10 @@
                                 <i data-feather="user" class="w-6 h-6"></i>
                             </a>
 
-                            <!-- Mobile Menu Button (Hidden on desktop) -->
                             <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
                                 <i id="hamburger-menu" data-feather="menu" class="w-6 h-6"></i>
                             </button>
 
-                            <!-- Mobile Menu  -->
                             <div id="mobile-menu"
                                 class="md:hidden invisible opacity-0 scale-95 w-[50%] absolute top-full right-0 bg-[#b6895b] shadow-lg z-40 transition-all duration-300 transform origin-top-right rounded-lg">
                                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
@@ -116,7 +106,6 @@
                     </div>
                 </div>
 
-                <!-- Mobile Search (Hidden on desktop) -->
                 <div class="md:hidden mt-3 px-4">
                     <div class="relative">
                         <input type="text" placeholder="Search..."

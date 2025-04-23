@@ -3,7 +3,6 @@
 @section('content')
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <!-- Flash Message -->
         @if (session('success'))
             <div id="flash-message"
                 class="bg-green-600 text-white px-6 py-3 rounded-lg mb-8 flex justify-between items-center transition-all duration-300">
@@ -19,7 +18,6 @@
         @endif
 
         @if (count($cart) > 0)
-            <!-- Cart Items -->
             <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-8">
                 <div class="hidden md:grid grid-cols-12 bg-gray-700 text-gray-300 p-4 font-medium">
                     <div class="col-span-5">Produk</div>
@@ -32,7 +30,6 @@
                 <div class="divide-y divide-gray-700">
                     @foreach ($cart as $item)
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 items-center">
-                            <!-- Product Image & Name -->
                             <div class="col-span-5 flex items-center space-x-4">
                                 <img src="{{ Storage::url($item['image']) }}" alt="{{ $item['name'] }}"
                                     class="w-20 h-20 object-cover rounded-lg">
@@ -44,14 +41,12 @@
                                 </div>
                             </div>
 
-                            <!-- Price -->
                             <div class="col-span-2 md:text-right">
                                 <span class="md:hidden text-gray-400">Harga: </span>
                                 <span class="text-white">Rp
                                     {{ number_format(floatval(str_replace('.', '', $item['price'])), 0, ',', '.') }}</span>
                             </div>
 
-                            <!-- Quantity -->
                             <div class="col-span-2 text-white">
                                 <div class="flex items-center justify-center space-x-2">
                                     <form action="{{ route('cart.update', $item['id']) }}" method="POST"
@@ -89,14 +84,12 @@
                                 </div>
                             </div>
 
-                            <!-- Subtotal -->
                             <div class="col-span-2 md:text-right">
                                 <span class="md:hidden text-gray-400">Subtotal: </span>
                                 <span class="text-white font-medium">Rp
                                     {{ number_format(floatval(str_replace('.', '', $item['price'])) * $item['quantity'], 0, ',', '.') }}</span>
                             </div>
 
-                            <!-- Remove -->
                             <div class="col-span-1 flex justify-center">
                                 <form action="{{ route('cart.remove', $item['id']) }}" method="POST"
                                     class="cart-remove-form">
@@ -116,7 +109,6 @@
                 </div>
             </div>
 
-            <!-- Checkout Section -->
             <div class="bg-gray-800 rounded-xl shadow-lg p-6">
                 <div class="flex flex-col md:flex-row justify-between items-center">
                     <div class="mb-4 md:mb-0">
@@ -140,7 +132,6 @@
                 </div>
             </div>
         @else
-            <!-- Empty Cart -->
             <div class="text-center py-16">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 mx-auto text-gray-500 mb-6" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">

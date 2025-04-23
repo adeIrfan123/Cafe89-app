@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="mx-4 sm:mx-8 lg:mx-16 mt-20 text-white">
-        <!-- Breadcrumb Navigation -->
         <nav class="mb-8">
             <ol class="flex items-center space-x-2 text-sm text-gray-300">
                 <li>
@@ -21,9 +20,7 @@
             </ol>
         </nav>
 
-        <!-- Product Section -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <!-- Product Image Gallery -->
             <div class="top-0 sticky lg:top-24">
                 <div class="bg-gray-800 rounded-xl shadow-xl overflow-hidden">
                     <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
@@ -31,13 +28,10 @@
                         id="main-product-image">
                 </div>
                 <div class="flex mt-4 space-x-3" id="thumbnail-container">
-                    <!-- Thumbnails would go here if you have multiple images -->
                 </div>
             </div>
 
-            <!-- Product Details -->
             <div class="relative">
-                <!-- Sticky Header for Mobile -->
                 <div class="contents">
                     <div class="sticky top-30 z-10 bg-gray-900/95 backdrop-blur-sm py-3 px-4 -mx-4 mb-4 lg:top-16">
                         <h1 class="text-2xl font-bold line-clamp-1 text-white">{{ $product->name }}</h1>
@@ -45,7 +39,6 @@
                             <p class="text-xl text-amber-200 font-semibold">
                                 Rp {{ $product->price }}
                             </p>
-                            {{-- reviews 1 --}}
                             <div class="flex items-center">
                                 <div class="flex text-amber-300 mr-2">
                                     @for ($i = 1; $i <= 5; $i++)
@@ -63,11 +56,8 @@
                     </div>
                 </div>
 
-                <!-- Regular Content -->
                 <div class="bg-gray-800/50 p-4 rounded-lg lg:bg-transparent lg:p-0">
-                    <!-- Desktop Header (hidden on mobile) -->
 
-                    <!-- Stock Status -->
                     <div class="mb-8">
                         <p class="text-lg text-white">
                             Availability:
@@ -82,7 +72,6 @@
                         </p>
                     </div>
 
-                    <!-- Quantity Selector -->
                     <form action="{{ route('cart.add') }}" method="POST" class="mb-6">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -122,7 +111,6 @@
                         </div>
                     </form>
 
-                    <!-- Buy Now Button -->
                     <form action="/" method="POST" class="mb-10">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -133,7 +121,6 @@
                         </button>
                     </form>
 
-                    <!-- Product Description -->
                     <div class="border-t border-gray-700 pt-8">
                         <h3 class="text-xl font-bold mb-4 text-white">Product Details</h3>
                         <div class="prose prose-invert max-w-none text-gray-300">

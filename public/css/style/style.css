@@ -7,7 +7,6 @@
     animation: fadeIn 1s ease-out forwards;
 }
 
-/* Scrollbar hiding for category navigation */
 .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -17,12 +16,10 @@
     display: none;
 }
 
-/* Smooth scrolling */
 html {
     scroll-behavior: smooth;
 }
 
-/* Product card hover effect */
 .product-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -31,13 +28,8 @@ html {
     transform: translateY(-5px);
 }
 
-/* Active category link */
+
 .category-nav-link.active {
     background-color: #b6895b;
     font-weight: bold;
 }
-
-/* cart */
-
-
-/* Memories */

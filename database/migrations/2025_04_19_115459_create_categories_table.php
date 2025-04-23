@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('category');
             $table->string('name_item');
+            $table->string('description')->nullable()->default('Deskripsi Kosong');
             $table->text('image');
             $table->timestamps();
         });

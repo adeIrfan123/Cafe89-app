@@ -15,16 +15,19 @@ class HomeController extends Controller
         $categories = Category::get();
         $products = Product::get();
         $banners = Baner::get();
+        $title = 'Home';
 
-        return view('home', compact('categories', 'products', 'banners'));
+        return view('home', compact('categories', 'products', 'banners', 'title'));
     }
 
     public function contact()
     {
-        return view('contact');
+        $title = 'Contact';
+        return view('contact', compact('title'));
     }
     public function about()
     {
-        return view('about');
+        $title = 'About';
+        return view('about', compact('title'));
     }
 }

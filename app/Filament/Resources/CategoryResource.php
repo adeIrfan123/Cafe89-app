@@ -36,6 +36,8 @@ class CategoryResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
+                    ->directory('categories')
+                    ->visibility('public')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('description')

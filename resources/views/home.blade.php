@@ -5,11 +5,9 @@
         <div class="slider flex rounded-2xl overflow-x-auto snap-x snap-mandatory w-full gap-4 scrollbar-hide">
             @foreach ($banners as $banner)
                 <div class="slide snap-start flex-shrink-0 w-full h-full relative">
-                    <!-- Banner Image -->
                     <img src="{{ Storage::url($banner->image) }}" alt="{{ $banner->title }}"
                         class="w-full h-[600px] lg:h-[900px] object-cover rounded-2xl">
 
-                    <!-- Overlay Content -->
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
                         <div class="text-white max-w-2xl mb-10 ml-5">
                             <h2 class="text-3xl md:text-5xl font-bold mb-2">{{ $banner->title ?? 'Special Offer' }}</h2>
@@ -54,7 +52,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-10">
                 @foreach ($categories as $category)
                     <div
-                        class="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300">
+                        class="hover:cursor-pointer group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300">
                         <div class="h-64 overflow-hidden">
                             <img src="{{ Storage::url($category->image) }}" alt="{{ $category->category }}"
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -107,7 +105,7 @@
                         earum mollitia dicta consequuntur laborum provident!
                     </p>
                     <button
-                        class="px-8 py-3 bg-amber-700 text-white rounded-lg font-medium hover:bg-amber-800 transition-colors duration-300">
+                        class="hover:cursor-pointer px-8 py-3 bg-amber-700 text-white rounded-lg font-medium hover:bg-amber-800 transition-colors duration-300">
                         Our Story
                     </button>
                 </div>
@@ -125,7 +123,7 @@
                         earum mollitia dicta consequuntur laborum provident!
                     </p>
                     <button
-                        class="px-8 py-3 bg-amber-700 text-white rounded-lg font-medium hover:bg-amber-800 transition-colors duration-300">
+                        class="hover:cursor-pointer px-8 py-3 bg-amber-700 text-white rounded-lg font-medium hover:bg-amber-800 transition-colors duration-300">
                         Our Story
                     </button>
                 </div>
@@ -208,7 +206,7 @@
             <div class="text-center mt-16">
                 <p class="text-amber-900 text-lg mb-6">Share your Coffee89 moments with us!</p>
                 <button id="shareMemoryBtn"
-                    class="px-8 py-3 bg-amber-700 hover:bg-amber-800 text-white rounded-lg font-medium transition-colors duration-300">
+                    class="hover:cursor-pointer px-8 py-3 bg-amber-700 hover:bg-amber-800 text-white rounded-lg font-medium transition-colors duration-300">
                     Share Your Memory
                 </button>
             </div>

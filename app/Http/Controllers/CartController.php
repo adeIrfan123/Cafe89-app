@@ -11,14 +11,14 @@ class CartController extends Controller
     {
 
         $cart = session()->get('cart', []);
-
+        $title = 'Cart';
         $total = 0;
         foreach ($cart as $item) {
 
             $price = str_replace('.', '', $item['price']);
             $total += (float)$price * $item['quantity'];
         }
-        return view('cart.index', compact('cart', 'total'));
+        return view('cart.index', compact('cart', 'total', 'title'));
     }
 
     public function add(Request $request)

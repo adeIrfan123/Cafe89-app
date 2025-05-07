@@ -11,14 +11,23 @@ class ProductController extends Controller
     //
     public function index()
     {
+        $allProducts = Product::latest()->get();
         $categories = Category::with('products')->get();
-        $products = Product::get();
-        return view('product', compact('products', 'categories'));
+        $searchQuery = request('search');
+
+        $searchedProducts = collect();
+        if ($searchQuery) {
+            $searchedProducts = Product::where('name', 'like', '%' . $searchQuery . '%')->get();
+        }
+
+        $title = 'Menu';
+        return view('product', compact('allProducts', 'categories', 'searchedProducts', 'title', 'searchQuery'));
     }
 
-    public function show()
+    public function show($slug)
     {
         $product = Product::where('slug', request('slug'))->firstOrFail();
-        return view('product_detail', compact('product'));
+        $title = $slug;
+        return view('product_detail', compact('product', 'title'));
     }
 }

@@ -25,6 +25,8 @@ class BanerResource extends Resource
         return $form
             ->schema([
                 Forms\Components\FileUpload::make('image')
+                    ->directory('banners')
+                    ->visibility('public')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('title')
@@ -50,6 +52,8 @@ class BanerResource extends Resource
                     ->searchable()
                     ->limit(70)
                     ->extraAttributes(['class' => 'w-90']),
+                Tables\Columns\ImageColumn::make('image')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

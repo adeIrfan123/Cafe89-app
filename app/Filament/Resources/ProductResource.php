@@ -39,6 +39,8 @@ class ProductResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image')
+                    ->directory('products')
+                    ->visibility('public')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\RichEditor::make('deskripsi_singkat')
@@ -66,6 +68,8 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
+                    ->searchable(),
+                Tables\Columns\ImageColumn::make('image')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->searchable(),

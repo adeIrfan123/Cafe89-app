@@ -21,7 +21,7 @@
             </p>
         </div>
 
-        <form action="{{ route('cart.add') }}" method="POST" class="mt-auto">
+        <form action="/cart/add" method="POST" class="mt-auto">
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <button type="submit"

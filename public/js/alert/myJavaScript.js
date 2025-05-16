@@ -27,6 +27,36 @@ document.addEventListener('click', function(e){
     }
 })
 
+const searchBtn = document.getElementById('search-btn');
+const searchInput = document.getElementById('search-input');
+
+searchBtn.addEventListener('click', function(){
+    searchInput.classList.toggle('hidden')
+})
+document.addEventListener('click', function(e){
+    if(!searchBtn.contains(e.target) && !searchInput.contains(e.target)){
+        searchInput.classList.add('hidden')
+    }
+})
+
+ document.addEventListener('DOMContentLoaded', function () {
+        const dropdownButton = document.getElementById('profileDropdownButton');
+        const dropdownMenu = document.getElementById('profileDropdownMenu');
+
+        dropdownButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Optional: Klik di luar untuk menutup
+        document.addEventListener('click', function (event) {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+    });
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const slider = document.querySelector('.slider');

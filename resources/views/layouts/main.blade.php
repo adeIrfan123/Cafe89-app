@@ -28,7 +28,7 @@
                     <div class="flex items-center space-x-8">
                         <a href="{{ route('home') }}"
                             class="flex items-center text-3xl font-bold text-white hover:text-amber-100 transition-colors duration-300">
-                            #89<span
+                            ☕#89<span
                                 class="text-[#854836] hover:text-[#6a3a2b] transition-colors duration-300">Coffe</span>
                         </a>
 
@@ -68,11 +68,11 @@
                     <div class="flex items-center">
                         <div class="relative md:block">
                             <form action="/products">
-                                <input id="search" value="{{ request('search') }}" name="search" type="text"
+                                <input id="search-input" value="{{ request('search') }}" name="search" type="text"
                                     placeholder="Search Produk..."
                                     class="hidden absolute top-11 -right-28 w-[300px] md:static md:block bg-white/20 backdrop-blur-sm border border-amber-200/30 rounded-full py-1 px-4 md:pr-10 text-white placeholder-amber-100/70 focus:outline-none focus:ring-2 focus:ring-amber-200 focus:border-transparent transition-all duration-300 w-48 lg:w-64">
                             </form>
-                            <i data-feather="search"
+                            <i id="search-btn" data-feather="search"
                                 class="hover:cursor-pointer w-6 h-6 md:w-5 md:h-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-amber-100 hover:text-white">
                             </i>
                         </div>
@@ -87,10 +87,37 @@
                                 </span>
                             </a>
 
-                            <a href="#"
-                                class="p-2 text-white hover:text-amber-100 transition-colors duration-300">
-                                <i data-feather="user" class="w-6 h-6"></i>
-                            </a>
+                            <ul class="relative">
+                                @auth('customer')
+                                    <div class="flex items-center space-x-2">
+                                        <button id="profileDropdownButton"
+                                            class="flex items-center space-x-2 focus:outline-none">
+                                            <i data-feather="user" class="w-6 h-6 text-white hover:text-amber-100"></i>
+                                            <p class="font-semibold text-white hover:text-amber-100">
+                                                {{ auth('customer')->user()->name }}
+                                            </p>
+                                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </button>
+
+                                        <div id="profileDropdownMenu"
+                                            class="absolute -right-8 top-7 mt-2 w-40 bg-white rounded-lg shadow-lg hidden z-50">
+                                            <form method="POST" action="/logout">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-amber-100 rounded-t-lg">
+                                                    Logout
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <a href="/login" class="font-semibold ml-7 text-xl">Login</a>
+                                    </div>
+                                @endauth
+                            </ul>
 
                             <button id="mobile-menu-button"
                                 class="hover:cursor-pointer md:hidden text-white focus:outline-none">

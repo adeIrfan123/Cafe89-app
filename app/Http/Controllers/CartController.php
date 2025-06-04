@@ -2,79 +2,74 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function index()
     {
+        $cart = Auth::guard('customer')->user()->cart;
 
-        $cart = session()->get('cart', []);
-        $title = 'Cart';
-        $total = 0;
-        foreach ($cart as $item) {
-
-            $price = str_replace('.', '', $item['price']);
-            $total += (float)$price * $item['quantity'];
+        if (!$cart) {
+            $cartItems = collect();
+            $total = 0;
+        } else {
+            $cartItems = $cart->items()->with('product')->get();
+            $total = $cartItems->sum(function ($item) {
+                $price = (int) str_replace('.', '', $item->price ?? $item->product->price);
+                return $price * $item->quantity;
+            });
         }
-        return view('cart.index', compact('cart', 'total', 'title'));
+        $title = 'Cart';
+
+        return view('cart.index', compact('cartItems', 'total', 'title'));
     }
 
     public function add(Request $request)
     {
+        $request->validate([
+            'product_id' => 'required|exists:products,id'
+        ]);
+
+        $customer = Auth::guard('customer')->user();
+
+        // Buat cart jika belum ada
+        $cart = $customer->cart ?? Cart::create(['customer_id' => $customer->id]);
+
         $product = Product::findOrFail($request->product_id);
-        $quantity = $request->input('quantity', 1);
 
+        $item = $cart->items()->where('product_id', $product->id)->first();
+        $quantity = $request->filled('quantity') ? (int) $request->quantity : 1;
 
-        if (!$product->id) {
-            return redirect()->route('products')->with('error', 'Produk tidak ditemukan.');
-        }
-
-        $cart = session()->get('cart', []);
-
-        $cart[$product->id] = [
-            'id' => $product->id,
-            'slug' => $product->slug,
-            'name' => $product->name,
-            'image' => $product->image,
+    if ($item) {
+        $item->update(['quantity' => $item->quantity + $quantity]);
+    } else {
+        $cart->items()->create([
+            'product_id' => $product->id,
+            'quantity' => $quantity,
             'price' => $product->price,
-            'quantity' => isset($cart[$product->id]) ? $cart[$product->id]['quantity'] + $quantity : $quantity,
-        ];
-
-        session()->put('cart', $cart);
-
-        return redirect()->route('cart.index')->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        ]);
     }
 
-    public function update(Request $request, $id)
-    {
-        $cart = session()->get('cart', []);
-
-        if (isset($cart[$id])) {
-            if ($request->action === 'increment') {
-                $cart[$id]['quantity'] += 1;
-            } elseif ($request->action === 'decrement' && $cart[$id]['quantity'] > 1) {
-                $cart[$id]['quantity'] -= 1;
-            }
-
-            session()->put('cart', $cart);
-            return redirect()->back()->with('success', 'Jumlah produk diperbarui.');
-        }
-
-        return redirect()->back()->with('error', 'Produk tidak ditemukan dalam keranjang.');
+        return redirect('cart')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
     }
 
-    public function remove($id)
+    public function update(Request $request, CartItem $item)
     {
-        $cart = session()->get('cart', []);
+        $quantity = max(1, (int) $request->quantity);
+        $item->update(['quantity' => $quantity]);
 
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-        }
+        return back()->with('success', 'Jumlah produk berhasil diperbarui.');
+    }
 
-        session()->put('cart', $cart);
+    public function destroy(CartItem $item)
+    {
+        $item->delete();
 
-        return back()->with('success', 'Produk berhasil dihapus dari keranjang!');
+        return back()->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
 }

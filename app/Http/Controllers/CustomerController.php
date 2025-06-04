@@ -6,6 +6,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\MessageBag;
 
 class CustomerController extends Controller
 {
@@ -20,7 +21,7 @@ class CustomerController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|min:3|max:255|regex:/^[^\d]*$/',
             'email' => 'required|email:rfc,dns|unique:customers,email',
-            'password' => 'required|min:6|max:255|confirmed',
+            'password' => 'required|min:6|max:255',
             'no_hp' => 'required|min:6|max:13',
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:Laki-laki,Perempuan',
@@ -42,19 +43,17 @@ class CustomerController extends Controller
         return view('customer.login', compact('title'));
     }
 
-    public function authenticate(Request $request)
+    public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email:dns',
-            'password' => 'required'
-        ]);
+        $credentials = $request->only('email', 'password');
 
         if (Auth::guard('customer')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/cart');
         }
 
-        return back()->with('loginError', 'Login Gagal');
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ]);
     }
 
     public function logout(Request $request)

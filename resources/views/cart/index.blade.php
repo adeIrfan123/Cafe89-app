@@ -85,22 +85,91 @@
             {{-- Total & Checkout --}}
             <div class="bg-gray-800 rounded-xl shadow-lg p-6">
                 <div class="flex flex-col md:flex-row justify-between items-center">
-                    <h3 class="text-xl font-bold text-white mb-4 md:mb-0">
-                        Total: Rp {{ number_format($total, 0, ',', '.') }}
-                    </h3>
+                    @php
+                        $ongkirCost = session('ongkir.cost', 0);
+                        $grandTotal = $total + $ongkirCost;
+                    @endphp
 
-                    <div class="flex space-x-4">
+                    <h3 class="text-xl font-bold text-white mb-4 md:mb-0">
+                        Total: Rp {{ number_format($grandTotal, 0, ',', '.') }}
+                        @if ($ongkirCost > 0)
+                            <span class="text-sm text-gray-300 font-normal block mt-1">
+                                (Termasuk Ongkir Rp {{ number_format($ongkirCost, 0, ',', '.') }})
+                            </span>
+                        @endif
+                    </h3>
+                    <div class="flex space-x-4 relative">
+                        <button id="shipping-btn"
+                            class="bg-amber-400 rounded-xl py-2 px-4 cursor-pointer hover:bg-amber-300 transition-all text-black font-bold">
+                            Pengiriman
+                        </button>
+                        <div id="shipping-form"
+                            class="hidden bg-[#b6895b] absolute -top-84 left-20 lg:-top-60 lg:-left-70 w-67 rounded-3xl py-4 px-4 shadow-lg">
+                            @if (session('error'))
+                                <div class="bg-red-500 text-white px-4 py-2 rounded-lg mb-4 text-sm text-center w-full">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+                            <form action="/shipping" method="post" class="flex flex-col items-center">
+                                @csrf
+
+                                {{-- Alamat --}}
+                                <div class="flex flex-col mb-4 w-full">
+                                    <label class="ml-2 mb-1 text-black text-sm font-medium">Alamat tujuan</label>
+                                    <input name="alamat" type="text"
+                                        class="text-black bg-white/20 placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/60 focus:border-transparent transition-all px-3 py-2 rounded-xl"
+                                        placeholder="Masukkan alamat" value="{{ old('alamat', session('alamat')) }}">
+                                </div>
+
+                                {{-- Pilih Pengiriman --}}
+                                <div
+                                    class="bg-white/20 backdrop-blur-sm flex flex-col rounded-xl px-4 mb-4 py-4 w-full border border-white/30">
+                                    <label class="mb-2 text-black text-sm font-medium">Pilih pengiriman</label>
+                                    <select name="pengiriman"
+                                        class="w-full bg-white/30 text-black border border-white/30 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-white/60">
+                                        <option value="jne" {{ session('kurir') == 'jne' ? 'selected' : '' }}>JNE
+                                        </option>
+                                        <option value="jnt" {{ session('kurir') == 'jnt' ? 'selected' : '' }}>J&T
+                                        </option>
+                                        <option value="sicepat" {{ session('kurir') == 'sicepat' ? 'selected' : '' }}>
+                                            Sicepat</option>
+                                    </select>
+
+                                    {{-- Harga Ongkir --}}
+                                    <div class="mt-4">
+                                        @php
+                                            $ongkirCost = data_get($ongkir, 'cost', null);
+                                        @endphp
+
+                                        <p class="text-black text-sm font-medium mb-1">Harga Ongkir</p>
+                                        <input type="text"
+                                            class="text-black bg-white/20 placeholder-white/70 border border-white/30 px-3 py-2 rounded-xl w-full"
+                                            value="{{ $ongkir && data_get($ongkir, 'cost') ? 'Rp ' . number_format(data_get($ongkir, 'cost'), 0, ',', '.') : 'Belum dihitung' }}"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                {{-- Tombol Simpan --}}
+                                <div class="flex justify-end w-full">
+                                    <button type="submit"
+                                        class="bg-white/30 text-black px-4 py-2 rounded-xl hover:bg-white/50 transition-all font-semibold shadow-lg">
+                                        Simpan Pilihan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+
                         <a href="{{ route('products') }}"
-                            class="px-6 py-3 border border-amber-400 text-amber-400 rounded-lg font-medium hover:bg-amber-400 hover:text-gray-900">
+                            class="transition-all px-6 py-3 border border-amber-400 text-amber-400 rounded-lg font-medium hover:bg-amber-400 hover:text-gray-900">
                             Lanjut Belanja
                         </a>
-                        <form action="" method="POST">
-                            @csrf
-                            <button type="submit"
-                                class="px-8 py-3 bg-amber-400 text-gray-900 rounded-lg font-bold hover:bg-amber-500">
-                                Checkout Sekarang
-                            </button>
-                        </form>
+                        <button id="pay-button"
+                            class="btn btn-primary px-8 py-3 rounded-lg font-bold transition-all
+{{ session('ongkir') && !session('error') ? 'bg-amber-400 hover:bg-amber-500 text-gray-900 cursor-pointer' : 'bg-gray-400 text-gray-300 cursor-not-allowed' }}"
+                            {{ session('ongkir') && !session('error') ? '' : 'data-disabled=true' }}>
+                            {{ session('ongkir') && !session('error') ? 'Checkout Sekarang' : 'Isi Form Pengiriman Dulu' }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -121,4 +190,90 @@
             </div>
         @endif
     </div>
+    <!-- Midtrans Snap.js -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+    </script>
+
+    <!-- Script Checkout -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const payButton = document.getElementById('pay-button');
+
+            // if (!payButton) {
+            //     console.warn('Tombol #pay-button tidak ditemukan.');
+            //     return;
+            // }
+
+            payButton.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                if (payButton.getAttribute('data-disabled') === 'true') {
+                    alert('Silakan isi form pengiriman terlebih dahulu.');
+                    return;
+                }
+
+                payButton.innerHTML = 'Memproses...';
+                payButton.disabled = true;
+
+                fetch('{{ route('checkout.process') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.error) {
+                            alert('Error: ' + response.error);
+                            payButton.disabled = false;
+                            payButton.innerHTML = 'Checkout Sekarang';
+                            return;
+                        }
+
+                        window.snap.pay(response.snap_token, {
+                            onSuccess: function(result) {
+                                console.log("SUKSES", result);
+                                // alert('Pembayaran berhasil! Order ID: ' + result.order_id);
+                                alert('Pembayaran berhasil! Order ID: ' + response
+                                    .order_id);
+
+                                fetch('/cart/clear', {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Content-Type': 'application/json',
+                                    }
+                                }).then(() => {
+                                    window.location.href = '/cart';
+                                });
+                            },
+                            onPending: function(result) {
+                                alert('Menunggu pembayaran! Order ID: ' + response
+                                    .order_id);
+                                window.location.href = '/cart';
+                            },
+                            onError: function(result) {
+                                alert('Pembayaran gagal!');
+                                payButton.disabled = false;
+                                payButton.innerHTML = 'Checkout Sekarang';
+                            },
+                            onClose: function() {
+                                alert('Anda menutup popup tanpa menyelesaikan pembayaran');
+                                payButton.disabled = false;
+                                payButton.innerHTML = 'Checkout Sekarang';
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat memproses pembayaran');
+                        payButton.disabled = false;
+                        payButton.innerHTML = 'Checkout Sekarang';
+                    });
+            });
+        });
+    </script>
+
+
 @endsection

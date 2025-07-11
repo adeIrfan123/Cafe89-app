@@ -24,10 +24,23 @@ class CartController extends Controller
                 return $price * $item->quantity;
             });
         }
+
         $title = 'Cart';
 
-        return view('cart.index', compact('cartItems', 'total', 'title'));
+        $ongkir = session('ongkir');
+        if (!is_array($ongkir)) {
+            $ongkir = null; // jika session ada tapi bukan array, reset ke null
+        }
+        $alamat = session('alamat');
+        $kurir = session('kurir');
+
+        if ($ongkir) {
+            logger('Ongkir dari session: ', $ongkir);
+        }
+
+        return view('cart.index', compact('cartItems', 'total', 'title', 'ongkir', 'alamat', 'kurir'));
     }
+
 
     public function add(Request $request)
     {
@@ -45,15 +58,15 @@ class CartController extends Controller
         $item = $cart->items()->where('product_id', $product->id)->first();
         $quantity = $request->filled('quantity') ? (int) $request->quantity : 1;
 
-    if ($item) {
-        $item->update(['quantity' => $item->quantity + $quantity]);
-    } else {
-        $cart->items()->create([
-            'product_id' => $product->id,
-            'quantity' => $quantity,
-            'price' => $product->price,
-        ]);
-    }
+        if ($item) {
+            $item->update(['quantity' => $item->quantity + $quantity]);
+        } else {
+            $cart->items()->create([
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+                'price' => $product->price,
+            ]);
+        }
 
         return redirect('cart')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
     }
@@ -68,8 +81,34 @@ class CartController extends Controller
 
     public function destroy(CartItem $item)
     {
+        $customer = Auth::guard('customer')->user();
+        $cart = $customer->cart;
         $item->delete();
+        if ($cart && $cart->items()->count() == 0) {
+            $cart->delete(); // Hapus keranjang jika tidak ada item
+        }
+
 
         return back()->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
+
+    public function clear()
+    {
+        $customer = Auth::guard('customer')->user();
+        $cart = $customer->cart;
+
+        if ($cart) {
+            $cart->items()->delete(); // Hapus semua item di keranjang
+            $cart->delete(); // Hapus keranjang itu sendiri
+        }
+
+        // Jika request dari fetch/AJAX, kirim JSON saja
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        // Jika request biasa (browser), redirect seperti biasa
+        return redirect('cart')->with('success', 'Keranjang berhasil dikosongkan.');
+    }
+
 }

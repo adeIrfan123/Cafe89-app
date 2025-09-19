@@ -10,7 +10,7 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 
-    {{-- <link rel="stylesheet" href="{{ asset('css/style/style.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('css/style/style.css') }}">
 
     <script src="https://unpkg.com/feather-icons"></script>
 
